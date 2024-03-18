@@ -1,57 +1,8 @@
 # Author: Kaia Reichard
 # GitHub username: kaiathekiwi
 # Date: 3/6/24
-# DETAILED TEXT DESCRIPTIONS OF HOW TO HANDLE THE SCENARIOS:
-# 2. Keeping track of turn order:
-#       - Turn order is tracked by self.turn and alternates after each turn
-#       - self.turn is updated within either make_move or enter_fairy_piece at the end, unless they return False
-#       - Once the move is completed or the fairy piece has entered, the turn order will change
-#       - If self.turn is equal to 'WHITE' it will be set equal to 'BLACK'
-#       - If self.turn is equal to 'BLACK' it will be set equal to 'WHITE'
-# 3. Keeping track of the current board position:
-#       - The current position of a piece on the board is tracked by a dictionary in the format
-#         {position : 'ChessPiece object name'}
-#       - initialize_board will create a dictionary for each spot on the board, where the keys are a letter and number
-#       - The values are the ChessPiece object's name. For example, {a8 : 'black_rook1'}
-#       - initialize_board will put the correct pieces in each spot for the start of the game and create ChessPiece
-#         objects
-#       - make_move will update the dictionary whenever a piece is moved by removing the value from the original spot
-#         and adding the piece as a value in the new spot
-#       - enter_fairy_piece will update the dictionary by putting the new piece as a value at the chosen position
-#       - make_move will remove the enemy piece at the position a piece is moving to from the dictionary if a piece
-#         is taken
-# 4. Determining if a regular move is valid:
-#       - Check self.game_state and return False if it's not 'UNFINISHED'
-#       - Check if it is the correct player's turn. If not, return False
-#       - Check if moved_from is on the board and check if move_to is on the board. If not, return False
-#       - Check if the color of the piece being moved matches the turn counter. If not, return False
-#       - Check the piece type and come up with which positions are legal moves for that piece (which will vary). If
-#         the move_to is not one of those positions, return False
-#       - Check if there is a piece of the same color at move_to. If there is, return False
-# 5. Determining if a fairy piece entering move is valid:
-#       - Check self.game_state and return False if it's not 'UNFINISHED'
-#       - Check if move_to is on the board. If not, return False
-#       - Check if move_to is in the home ranks. If not, return False
-#       - Check if it is the correct player's turn. If not, return False
-#       - Check if self.(color)_fairy_count is equal to 2, where (color) is the color of the player's turn. If it's 2,
-#         return False
-#       - Iterate through self.(color)_lost to check if a queen, rook, bishop, or knight has been lost.
-#         If not, return False.
-#       - Check if self.(color)_fairy_count is equal to 1. If so, iterate through self.(color)_lost if two pieces that
-#         are a queen, rook, bishop, or knight have been lost. If not, return false.
-
-# KEY: Each chess piece is represented by a letter (usually the first letter of their name), a number, and their color
-#   which is represented by 'b' or 'w'. Kings are represented with a 'K', whereas knights are represented by 'k'
-#   Pawn: p
-#   Rook: r
-#   Knight: k
-#   Bishop: b
-#   King: K
-#   Queen: q
-#   Falcon: f
-#   Hunter: h
-
-# Example: bp1 = Pawn('black') is the first black pawn
+# Description: A chess game with falcon and hunter pieces. It does not take user input, but functions based off of
+#               code in the main. I was really sick the past week, so I was unable to finish it in time.
 class ChessVar:
     """A ChessVar object represents a chess game. It is responsible for keeping track of the board, the
         game state, what moves are legal/illegal, which pieces have been lost, and entering the fairy pieces.
@@ -710,9 +661,15 @@ class PawnPiece(ChessPiece):
         return super().get_piece_type()
 
     def get_pawn_move(self):
+        """Return the pawn move, such as if it can move forward twice.
+                    Parameters: None
+                    Returns: self._pawn_move"""
         return self.pawn_move
 
     def change_pawn_move(self):
+        """Change the pawn move to false.
+                    Parameters: None
+                    Returns: None"""
         self.pawn_move = False
 
 
@@ -813,9 +770,3 @@ class HunterPiece(ChessPiece):
     def get_piece_type(self):
         return super().get_piece_type()
 
-
-game1 = ChessVar()
-game1.display_board()
-print(game1.get_game_state())
-game1.make_move('f1', 'a6')
-game1.display_board()
